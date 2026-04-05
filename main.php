@@ -1,8 +1,6 @@
 <?php
-
-// ==========================
 // OBSERVER
-// ==========================
+
 interface Observer {
     public function update($data);
 }
@@ -28,9 +26,9 @@ class Subject {
     }
 }
 
-// ==========================
+
 // OBSERVERS
-// ==========================
+
 class EmailObserver implements Observer {
     public function update($data) {
         echo "\033[34m Email enviado para pedido {$data['id']}\033[0m\n";
@@ -49,9 +47,9 @@ class LogObserver implements Observer {
     }
 }
 
-// ==========================
+
 // REPOSITÓRIO DE PEDIDOS
-// ==========================
+
 class RepositorioPedidos {
     private $arquivo = "pedidos.txt";
 
@@ -96,9 +94,9 @@ class RepositorioPedidos {
     }
 }
 
-// ==========================
+
 // SISTEMA DE PEDIDOS
-// ==========================
+
 class SistemaPedidos extends Subject {
     private $repo;
 
@@ -113,17 +111,17 @@ class SistemaPedidos extends Subject {
         }
         $pedido = ['id' => $id, 'descricao' => $descricao, 'status' => 'criado'];
         $this->repo->salvar($pedido);
-        echo "\033[32m✅ Pedido {$id} criado com sucesso!\033[0m\n";
+        echo "\033[32m Pedido {$id} criado com sucesso!\033[0m\n";
         $this->notify($pedido);
     }
 
     public function listarPedidos() {
         $pedidos = $this->repo->listar();
         if (empty($pedidos)) {
-            echo "\n📭 Nenhum pedido encontrado.\n";
+            echo "\n Nenhum pedido encontrado.\n";
             return;
         }
-        echo "\n📋 LISTA DE PEDIDOS:\n";
+        echo "\n LISTA DE PEDIDOS:\n";
         echo "--------------------------\n";
         foreach ($pedidos as $pedido) {
             echo "ID: {$pedido['id']}\n";
@@ -135,12 +133,12 @@ class SistemaPedidos extends Subject {
 
     public function atualizarStatus($id, $status) {
         $this->repo->atualizarStatus($id, $status);
-        echo "\033[36m🔄 Status do pedido {$id} atualizado para {$status}\033[0m\n";
+        echo "\033[36m Status do pedido {$id} atualizado para {$status}\033[0m\n";
     }
 
     public function removerPedido($id) {
         $this->repo->remover($id);
-        echo "\033[31m🗑️ Pedido {$id} removido!\033[0m\n";
+        echo "\033[31m Pedido {$id} removido!\033[0m\n";
     }
 
     public function buscarPorId($id) {
@@ -148,9 +146,9 @@ class SistemaPedidos extends Subject {
     }
 }
 
-// ==========================
+
 // MENU INTERATIVO
-// ==========================
+
 $sistema = new SistemaPedidos();
 $sistema->subscribe(new EmailObserver());
 $sistema->subscribe(new EstoqueObserver());
